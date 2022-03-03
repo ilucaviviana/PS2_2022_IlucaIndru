@@ -1,0 +1,36 @@
+#include <LiquidCrystal.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+int oneWireBus=13;
+OneWire oneWire(oneWireBus);
+DallasTemperature sensors(&oneWire);
+float TEMP;
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
+  
+  Serial.begin(9600);
+  lcd.begin(16,2);
+  sensors.begin(); 
+
+}
+
+void loop() {
+  sensors.requestTemperatures();
+  TEMP=sensors.getTempCByIndex(0);
+  
+  lcd.setCursor(0,0);
+  lcd.print("-TEMP CURENTA-");
+  lcd.setCursor(0,1);
+  lcd.print("TEMP = ");
+  lcd.print(TEMP);
+
+  delay(2000);
+  lcd.clear();
+
+}
